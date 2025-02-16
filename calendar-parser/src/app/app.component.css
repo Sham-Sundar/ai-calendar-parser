@@ -1,0 +1,106 @@
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    align-items: center;
+}
+
+.sign-in-btn {
+    color: white;
+    background-color: #303030;
+    padding: 15px 30px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    box-shadow: black 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 8px rgba(5, 5, 5, 0.5);
+
+    img {
+        background-color: transparent;
+        width: 30px;
+    }
+}
+
+.sign-in-btn:hover {
+    background-color: #575757;
+}
+
+
+.btn-area {
+    display: flex;
+    gap: 20px;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: #333;
+    padding: 20px 30px;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 3px 3px 8px rgba(5, 5, 5, 0.5);
+
+    span {
+        background-color: transparent;
+    }
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.table-area{
+    color: white;
+}
+
+
+.table-area {
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+  }
+  
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .styled-table th, .styled-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .styled-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .styled-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .styled-table tr:hover {
+    background-color: #ddd;
+  }

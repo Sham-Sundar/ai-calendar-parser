@@ -1,0 +1,35 @@
+<div class="main-container">
+  <div class="content-area">
+
+    <div class="profile-container" *ngIf="isSignedIn">
+      <img [src]="profileImage" alt="Profile Image" class="profile-img">
+      <span>{{ userProfile()?.name }}</span>
+
+    </div>
+
+    <div class="btn-area">
+      <button (click)="signIn()" *ngIf="!isSignedIn()" class="sign-in-btn">Sign In with <img
+          src="icons8-google-48.png"></button>
+      <button (click)="signOut()" *ngIf="isSignedIn()" class="sign-in-btn">Sign Out</button>
+      <button (click)="loadEvents()" *ngIf="isSignedIn()" class="sign-in-btn">Fetch Events</button>
+    </div>
+
+    <div class="table-area">
+      <table *ngIf="eventList.length" class="styled-table">
+        <thead>
+          <tr>
+            <th>Events</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of eventList">
+            <td>{{ event.summary }}</td>
+            <td>{{ formatDate(event.start.dateTime || event.start.date) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
