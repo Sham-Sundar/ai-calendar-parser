@@ -13,6 +13,8 @@ export class AppComponent {
   isSignedIn = signal(false);
   events = signal<any[]>([]);
   userProfile = signal<any>(null);
+  eventSummaries = signal<string[]>([]); // ✅ FIX: Add missing property for AI summaries
+
 
   constructor(private googleCalendarService: GoogleCalendarService) { }
 
@@ -28,6 +30,11 @@ export class AppComponent {
     this.googleCalendarService.userProfile.subscribe(profile => {
       this.userProfile.set(profile);
     });
+
+        // ✅ FIX: Subscribe to AI-generated event summaries
+        this.googleCalendarService.eventSummaries.subscribe(summaries => {
+          this.eventSummaries.set(summaries);
+        });
   }
 
   get eventList() {

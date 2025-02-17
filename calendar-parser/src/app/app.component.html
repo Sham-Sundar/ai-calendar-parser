@@ -14,6 +14,13 @@
       <button (click)="loadEvents()" *ngIf="isSignedIn()" class="sign-in-btn">Fetch Events</button>
     </div>
 
+    <div class="summary-container" *ngIf="eventSummaries().length">
+      <h2>📅 AI-Generated Event Summaries:</h2>
+      <ul class="summary-list">
+        <li *ngFor="let summary of eventSummaries()">{{ summary }}</li>
+      </ul>
+    </div>
+
     <div class="table-area">
       <table *ngIf="eventList.length" class="styled-table">
         <thead>
