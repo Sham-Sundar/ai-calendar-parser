@@ -16,8 +16,8 @@ declare var gapi: any;
   providedIn: 'root'
 })
 export class GoogleCalendarService {
-  private CLIENT_ID = '800641135611-172qpkuhuasosaiijtk3njok4ogo1tl7.apps.googleusercontent.com';
-  private API_KEY = 'AIzaSyDX3YE0DH3pgUSrFuIqBDUH7qW48rNhZJ0';
+  private CLIENT_ID = 'ADD_YOUR_CLIENT_ID_HERE';
+  private API_KEY = 'ADD_YOUR_GOOGLE_API_KEY_HERE';
   private DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
   private SCOPES = "https://www.googleapis.com/auth/calendar.readonly profile email";
   public eventSummaries = new BehaviorSubject<string[]>([]);
@@ -60,7 +60,7 @@ export class GoogleCalendarService {
 
   private initializeGapiClient() {
     if (!window.gapi) {
-      console.warn("⏳ Waiting for gapi to load...");
+      console.warn("Waiting for gapi to load...");
       setTimeout(() => this.initializeGapiClient(), 500);
       return;
     }

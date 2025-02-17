@@ -18,12 +18,7 @@ export class AppComponent {
   eventSummaries = signal<string[]>([]);
   value!: string | number;
 
-
   constructor(private googleCalendarService: GoogleCalendarService) { }
-  toggleDarkMode() {
-    const element: any = document.querySelector('html');
-    element.classList.toggle('my-app-dark');
-  }
 
   ngOnInit() {
     this.googleCalendarService.isSignedIn.subscribe(status => {
