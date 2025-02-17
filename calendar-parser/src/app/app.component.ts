@@ -1,11 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { GoogleCalendarService } from './google-calendar.service';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule, TabsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -13,10 +15,15 @@ export class AppComponent {
   isSignedIn = signal(false);
   events = signal<any[]>([]);
   userProfile = signal<any>(null);
-  eventSummaries = signal<string[]>([]); // ✅ FIX: Add missing property for AI summaries
+  eventSummaries = signal<string[]>([]);
+  value!: string | number;
 
 
   constructor(private googleCalendarService: GoogleCalendarService) { }
+  toggleDarkMode() {
+    const element: any = document.querySelector('html');
+    element.classList.toggle('my-app-dark');
+  }
 
   ngOnInit() {
     this.googleCalendarService.isSignedIn.subscribe(status => {
@@ -31,10 +38,9 @@ export class AppComponent {
       this.userProfile.set(profile);
     });
 
-        // ✅ FIX: Subscribe to AI-generated event summaries
-        this.googleCalendarService.eventSummaries.subscribe(summaries => {
-          this.eventSummaries.set(summaries);
-        });
+    this.googleCalendarService.eventSummaries.subscribe(summaries => {
+      this.eventSummaries.set(summaries);
+    });
   }
 
   get eventList() {

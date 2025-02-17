@@ -34,7 +34,7 @@ export class GoogleCalendarService {
 
   private loadGoogleAPI() {
     if (!window.google || !window.google.accounts) {
-      console.error("❌ Google Identity Services (GIS) not loaded.");
+      console.error("Google Identity Services (GIS) not loaded.");
       return;
     }
 
@@ -45,12 +45,12 @@ export class GoogleCalendarService {
         if (response.access_token) {
           localStorage.setItem('google_access_token', response.access_token);
           this.isSignedIn.next(true);
-          console.log("✅ Access Token Stored:", response.access_token);
+          console.log("Access Token Stored:", response.access_token);
 
           this.fetchUserProfile(response.access_token);
           this.initializeGapiClient();
         } else {
-          console.error("❌ Google sign-in failed:", response);
+          console.error("Google sign-in failed:", response);
         }
       },
     });
@@ -70,9 +70,9 @@ export class GoogleCalendarService {
         apiKey: this.API_KEY,
         discoveryDocs: this.DISCOVERY_DOCS
       }).then(() => {
-        console.log("✅ Google Calendar API initialized.");
+        console.log("Google Calendar API initialized.");
         this.checkExistingSession();
-      }).catch((error: any) => console.error("❌ Error initializing Google API:", error));
+      }).catch((error: any) => console.error("Error initializing Google API:", error));
     });
   }
 
@@ -81,7 +81,7 @@ export class GoogleCalendarService {
     const storedUser = localStorage.getItem('google_user');
 
     if (storedToken) {
-      console.log('✅ Existing Google session found.');
+      console.log('Existing Google session found.');
       this.isSignedIn.next(true);
       this.fetchEvents();
 
@@ -103,7 +103,7 @@ export class GoogleCalendarService {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("✅ User Profile Data:", data);
+        console.log("User Profile Data:", data);
 
         // Store profile info in localStorage
         localStorage.setItem('google_user', JSON.stringify(data));
@@ -111,7 +111,7 @@ export class GoogleCalendarService {
         // Update userProfile observable
         this.userProfile.next(data);
       })
-      .catch(error => console.error("❌ Error fetching user profile:", error));
+      .catch(error => console.error("Error fetching user profile:", error));
   }
 
 
@@ -124,7 +124,7 @@ export class GoogleCalendarService {
     const accessToken = localStorage.getItem('google_access_token');
     if (accessToken) {
       google.accounts.oauth2.revoke(accessToken, () => {
-        console.log('✅ User signed out successfully');
+        console.log('User signed out successfully');
         this.isSignedIn.next(false);
         this.events.next([]);
         this.userProfile.next(null);
@@ -134,35 +134,10 @@ export class GoogleCalendarService {
     }
   }
 
-  // fetchEvents() {
-  //   if (!window.gapi || !gapi.client || !gapi.client.calendar) {
-  //     console.warn("⏳ Google Calendar API is still loading, retrying in 500ms...");
-  //     setTimeout(() => this.fetchEvents(), 500);
-  //     return;
-  //   }
-
-  //   const accessToken = localStorage.getItem('google_access_token');
-  //   if (!accessToken) {
-  //     console.error("❌ No access token found. User might be signed out.");
-  //     return;
-  //   }
-
-  //   gapi.client.setToken({ access_token: accessToken });
-  //   gapi.client.calendar.events.list({
-  //     calendarId: 'primary',
-  //     showDeleted: false,
-  //     singleEvents: true,
-  //     maxResults: 50,
-  //     orderBy: 'startTime'
-  //   }).then((response: any) => {
-  //     this.events.next(response.result.items || []);
-  //     console.log("✅ Fetched events successfully:", response.result.items);
-  //   }).catch((error: any) => console.error('❌ Error fetching events:', error));
-  // }
 
   fetchEvents() {
     if (!window.gapi || !gapi.client || !gapi.client.calendar) {
-      console.warn("⏳ Google Calendar API is still loading, retrying in 500ms...");
+      console.warn("Google Calendar API is still loading, retrying in 500ms...");
       setTimeout(() => this.fetchEvents(), 500);
       return;
     }
@@ -175,31 +150,29 @@ export class GoogleCalendarService {
     }).then((response: any) => {
       const events = response.result.items || [];
       this.events.next(events);
-      console.log("✅ Fetched events successfully:", events);
+      console.log("Fetched events successfully:", events);
 
       // 🔹 Call Gemini AI to summarize the fetched events
       this.fetchEventSummaries(events);
-    }).catch((error: any) => console.error('❌ Error fetching events:', error));
+    }).catch((error: any) => console.error('Error fetching events:', error));
   }
 
   async fetchEventSummaries(events: any[]) {
     if (!events || events.length === 0) {
-      console.warn("⚠️ No events to summarize.");
+      console.warn("No events to summarize.");
       return;
     }
 
-    console.log("📢 Sending events to Gemini AI:", events);
+    console.log("Sending events to Gemini AI:", events);
 
     const genAI = new GoogleGenerativeAI(this.API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // ✅ Use fast model
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
   I want you to analyze the following Google Calendar events and summarize them in a **structured format** as follows:
 
   - Provide **bullet points** (each point not more than 8-12 words).
-  - Each point should describe an **individual event** concisely.
-  - If an event repeats (e.g., "Wedding event" twice this week), summarize like: **"You have 2 wedding events this week."**
-  - Focus on the **date, nature of the event, and key details**.
+  - If an event repeats (e.g., "Meeting with XYZ Person" twice this week), summarize like: "You have 2 meetings with XYZ person this week.", once you have summarized 2 similar events then you don't have to write it again. You can summarize 2 similar events in 1 point..
 
   Here are the events:
   ${JSON.stringify(events)}
@@ -215,13 +188,13 @@ export class GoogleCalendarService {
       if (response && response.text()) {
         const summaryText = response.text();
         this.eventSummaries.next([summaryText]);
-        console.log("✅ Gemini AI Summary Received:", summaryText);
+        console.log("Gemini AI Summary Received:", summaryText);
       } else {
-        console.warn("⚠️ No valid summaries received from Gemini AI.");
+        console.warn("No valid summaries received from Gemini AI.");
         this.eventSummaries.next(["No summary available."]);
       }
     } catch (error) {
-      console.error("❌ Error fetching event summaries from Gemini AI:", error);
+      console.error("Error fetching event summaries from Gemini AI:", error);
       this.eventSummaries.next(["Error fetching AI summary."]);
     }
   }

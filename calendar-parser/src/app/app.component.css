@@ -72,11 +72,11 @@
     color: white;
 }
 
-
 .table-area {
     margin: 20px auto;
     width: 80%;
     text-align: center;
+    background-color: #303030;
   }
   
   .styled-table {
@@ -90,17 +90,17 @@
     text-align: left;
     border: 1px solid #ddd;
   }
-  
+
   .styled-table th {
     background-color: #007bff;
     color: white;
     font-weight: bold;
   }
-  
-  .styled-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+
+  .main-area{
+    width: 800px;
   }
-  
-  .styled-table tr:hover {
-    background-color: #ddd;
+
+  ul{
+    list-style: none;
   }

@@ -14,28 +14,58 @@
       <button (click)="loadEvents()" *ngIf="isSignedIn()" class="sign-in-btn">Fetch Events</button>
     </div>
 
-    <div class="summary-container" *ngIf="eventSummaries().length">
-      <h2>📅 AI-Generated Event Summaries:</h2>
-      <ul class="summary-list">
-        <li *ngFor="let summary of eventSummaries()">{{ summary }}</li>
-      </ul>
-    </div>
-
-    <div class="table-area">
-      <table *ngIf="eventList.length" class="styled-table">
-        <thead>
-          <tr>
-            <th>Events</th>
-            <th>Date & Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let event of eventList">
-            <td>{{ event.summary }}</td>
-            <td>{{ formatDate(event.start.dateTime || event.start.date) }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div *ngIf="isSignedIn()" class="main-area">
+      <p-tabs [value]="value">
+        <p-tablist>
+          <p-tab [value]="0">Summaries</p-tab>
+          <p-tab [value]="1">Events</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel [value]="0">
+            
+            <div class="table-area">
+              <table *ngIf="eventSummaries().length" class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Event Summary</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let summary of eventSummaries()">
+                    <td>
+                      <ul>
+                        <li *ngFor="let item of summary.split('*')">
+                          {{ item.trim() }}
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            
+          </p-tabpanel>
+          <p-tabpanel [value]="1">
+            <div class="table-area">
+              <table *ngIf="eventList.length" class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Events</th>
+                    <th>Date & Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let event of eventList">
+                    <td>{{ event.summary }}</td>
+                    <td>{{ formatDate(event.start.dateTime || event.start.date) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
     </div>
 
   </div>
